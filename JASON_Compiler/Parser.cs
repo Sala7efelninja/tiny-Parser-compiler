@@ -166,7 +166,7 @@ namespace Tiny_Compiler
         private Node Statement2()
         {
             Node statement2 = new Node("Statement2");
-            if(TokenStream[InputPointer].token_type==Token_Class.Semicolon)
+            if(TokenStream[InputPointer-1].token_type==Token_Class.Semicolon && (TokenStream[InputPointer].token_type != Token_Class.Return|| TokenStream[InputPointer].token_type != Token_Class.Comment))
             {
                 statement2.Children.Add(Statement());
                 statement2.Children.Add(Statement2());
@@ -185,7 +185,7 @@ namespace Tiny_Compiler
                 statement.Children.Add(Write_Statement());
             if (TokenStream[InputPointer].token_type == Token_Class.INT|| TokenStream[InputPointer].token_type == Token_Class.Float|| TokenStream[InputPointer].token_type == Token_Class.String)
                 statement.Children.Add(Decleration_Statement());
-            if (TokenStream[InputPointer].token_type == Token_Class.Assign)
+            if (TokenStream[InputPointer+1].token_type == Token_Class.Assign)
                 statement.Children.Add(Assignment_Statement());
             if (TokenStream[InputPointer].token_type == Token_Class.If)
                 statement.Children.Add(If_Statement());
@@ -358,6 +358,7 @@ namespace Tiny_Compiler
             assignment_statement.Children.Add(Identifier());
             assignment_statement.Children.Add(match(Token_Class.Assign));
             assignment_statement.Children.Add(Expression());
+            assignment_statement.Children.Add(match(Token_Class.Semicolon));
             return assignment_statement;
         }
 
