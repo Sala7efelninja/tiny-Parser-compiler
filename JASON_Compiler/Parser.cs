@@ -33,8 +33,6 @@ namespace Tiny_Compiler
         Node Program()
         {
             Node program = new Node("Program");
-            if (TokenStream[InputPointer].token_type == Token_Class.Comment)
-                program.Children.Add(Comment_Statement());
             program.Children.Add(Functions());
             program.Children.Add(Main_Function());
             return program;
@@ -166,13 +164,28 @@ namespace Tiny_Compiler
         private Node Statement2()
         {
             Node statement2 = new Node("Statement2");
-            if(TokenStream[InputPointer].token_type==Token_Class.Semicolon)
+            if(checkStatement())
             {
                 statement2.Children.Add(Statement());
                 statement2.Children.Add(Statement2());
             }
             return statement2;
         }
+        
+       bool checkStatement()
+        {
+            if (TokenStream[InputPointer].token_type == Token_Class.Read || (TokenStream[InputPointer].token_type == Token_Class.Write) ||
+                (TokenStream[InputPointer].token_type == Token_Class.INT) || (TokenStream[InputPointer].token_type == Token_Class.Idenifier) ||
+                (TokenStream[InputPointer].token_type == Token_Class.Float) || (TokenStream[InputPointer].token_type == Token_Class.String) ||
+                 (TokenStream[InputPointer].token_type == Token_Class.If) || (TokenStream[InputPointer].token_type == Token_Class.ElseIf) ||
+                (TokenStream[InputPointer].token_type == Token_Class.Else) || (TokenStream[InputPointer].token_type == Token_Class.Repeat))
+                return true;
+
+            return false;
+
+
+        }
+     
 
         private Node Statement()
         {
@@ -185,7 +198,7 @@ namespace Tiny_Compiler
                 statement.Children.Add(Write_Statement());
             if (TokenStream[InputPointer].token_type == Token_Class.INT|| TokenStream[InputPointer].token_type == Token_Class.Float|| TokenStream[InputPointer].token_type == Token_Class.String)
                 statement.Children.Add(Decleration_Statement());
-            if (TokenStream[InputPointer].token_type == Token_Class.Assign)
+            if (TokenStream[InputPointer].token_type == Token_Class.Idenifier)
                 statement.Children.Add(Assignment_Statement());
             if (TokenStream[InputPointer].token_type == Token_Class.If)
                 statement.Children.Add(If_Statement());
@@ -358,6 +371,7 @@ namespace Tiny_Compiler
             assignment_statement.Children.Add(Identifier());
             assignment_statement.Children.Add(match(Token_Class.Assign));
             assignment_statement.Children.Add(Expression());
+            assignment_statement.Children.Add(match(Token_Class.Semicolon));
             return assignment_statement;
         }
 
