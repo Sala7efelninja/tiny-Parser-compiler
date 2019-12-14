@@ -33,6 +33,8 @@ namespace Tiny_Compiler
         Node Program()
         {
             Node program = new Node("Program");
+            if (TokenStream[InputPointer].token_type == Token_Class.Comment)
+                program.Children.Add(Comment_Statement());
             program.Children.Add(Functions());
             program.Children.Add(Main_Function());
             return program;
@@ -117,6 +119,7 @@ namespace Tiny_Compiler
             Node parameter_list = new Node("Parameter_list");
             if (TokenStream[InputPointer].token_type == Token_Class.Comma)
             {
+                parameter_list.Children.Add(match(Token_Class.Comma));
                 parameter_list.Children.Add(Parameter());
                 parameter_list.Children.Add(Parameter_list());
             }
@@ -404,16 +407,17 @@ namespace Tiny_Compiler
         private Node Equation2()
         {
             Node equ2 = new Node("Equation2");
-            if(TokenStream[InputPointer].token_type==Token_Class.LParanthesis)
+            if (TokenStream[InputPointer].token_type == Token_Class.LParanthesis)
             {
                 equ2.Children.Add(match(Token_Class.LParanthesis));
                 equ2.Children.Add(Equation());
                 equ2.Children.Add(match(Token_Class.RParanthesis));
             }
-         else if (TokenStream[InputPointer].token_type == Token_Class.Idenifier && checkOP(InputPointer + 1))
-            
+            else if (TokenStream[InputPointer].token_type == Token_Class.Idenifier && checkOP(InputPointer + 1))
+            {
+                equ2.Children.Add(match(Token_Class.Idenifier));
                 equ2.Children.Add(Equation());
-            
+            }
             else if (TokenStream[InputPointer].token_type == Token_Class.Number || TokenStream[InputPointer].token_type == Token_Class.Idenifier)
                 equ2.Children.Add(Term());
 
