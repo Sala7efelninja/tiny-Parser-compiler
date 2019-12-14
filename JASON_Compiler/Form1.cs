@@ -32,7 +32,7 @@ namespace Tiny_Compiler
         {
             for (int i = 0; i < TinyCompiler.Tiny_Scanner.Tokens.Count; i++)
             {
-               dataGridView1.Rows.Add(TinyCompiler.Tiny_Scanner.Tokens.ElementAt(i).lex, TinyCompiler.Tiny_Scanner.Tokens.ElementAt(i).token_type);
+               dataGridView1.Rows.Add(i,TinyCompiler.Tiny_Scanner.Tokens.ElementAt(i).lex, TinyCompiler.Tiny_Scanner.Tokens.ElementAt(i).token_type);
             }
         }
 
@@ -58,6 +58,7 @@ namespace Tiny_Compiler
         {
             dataGridView1.Rows.Clear();
             TinyCompiler.TokenStream.Clear();
+            treeView1.Nodes.Clear();
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)

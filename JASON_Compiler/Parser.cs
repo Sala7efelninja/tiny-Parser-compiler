@@ -69,7 +69,9 @@ namespace Tiny_Compiler
         Node Functions()
         {
             Node functions = new Node("Functions");
-          if((TokenStream[InputPointer].token_type==Token_Class.INT|| TokenStream[InputPointer].token_type == Token_Class.Float|| TokenStream[InputPointer].token_type == Token_Class.String)&& TokenStream[InputPointer+1].lex!="main")
+            if (TokenStream[InputPointer].token_type == Token_Class.Comment)
+                functions.Children.Add(Comment_Statement());
+            if ((TokenStream[InputPointer].token_type==Token_Class.INT|| TokenStream[InputPointer].token_type == Token_Class.Float|| TokenStream[InputPointer].token_type == Token_Class.String)&& TokenStream[InputPointer+1].lex!="main")
             {
                 functions.Children.Add(Function_Statement());
                 functions.Children.Add(Functions());
@@ -177,8 +179,8 @@ namespace Tiny_Compiler
             Node statement = new Node("Statement");
             if (TokenStream[InputPointer].token_type == Token_Class.Read)
                 statement.Children.Add(Read_Statement());
-            if (TokenStream[InputPointer].token_type == Token_Class.Return)
-                statement.Children.Add(Return_Statement());
+ //           if (TokenStream[InputPointer].token_type == Token_Class.Return)
+  //              statement.Children.Add(Return_Statement());
             if (TokenStream[InputPointer].token_type==Token_Class.Write)
                 statement.Children.Add(Write_Statement());
             if (TokenStream[InputPointer].token_type == Token_Class.INT|| TokenStream[InputPointer].token_type == Token_Class.Float|| TokenStream[InputPointer].token_type == Token_Class.String)
