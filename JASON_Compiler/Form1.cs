@@ -59,6 +59,7 @@ namespace Tiny_Compiler
             dataGridView1.Rows.Clear();
             TinyCompiler.TokenStream.Clear();
             treeView1.Nodes.Clear();
+            textBox2.Clear();
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
